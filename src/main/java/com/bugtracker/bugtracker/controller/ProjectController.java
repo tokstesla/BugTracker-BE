@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,9 +38,10 @@ public class ProjectController {
     @PostMapping("members/{mid}/projects")
     public ResponseEntity<?> createProject(@RequestBody ProjectDto projectDto) {
         projectService.createProject(projectDto);
-        return new ResponseEntity<>("project created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Project created", HttpStatus.CREATED);
     }
 
+    @RolesAllowed("ADMIN")
     @GetMapping("members/{mid}/projects")
     public ProjectResponse getAllProjects(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,

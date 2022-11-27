@@ -25,7 +25,6 @@ public class ProjectServiceImpl implements ProjectService {
     private final MemberRepository memberRepository;
 
 
-
     public ProjectServiceImpl(ProjectRepository projectRepository, MemberRepository memberRepository) {
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
@@ -42,19 +41,19 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project editProject(ProjectDto projectDto,int projectId) {
+    public Project editProject(ProjectDto projectDto, int projectId) {
         Project project = projectRepository.findProjectById(projectId);
         if (projectDto.getName() != null && !projectDto.getName().isEmpty()) {
             project.setName(projectDto.getName());
         }
         if (projectDto.getDescription() != null && !projectDto.getDescription().isEmpty()) {
-            project.setDescription(project.getDescription());
+            project.setDescription(projectDto.getDescription());
         }
-        List<Member> contributors = projectDto.getMembers().stream().map(member -> memberRepository.findMemberById(member)).toList();
         if (projectDto.getMembers() != null && !projectDto.getMembers().isEmpty()) {
+            List<Member> contributors = projectDto.getMembers().stream().map(member -> memberRepository.findMemberById(member)).toList();
             project.setMembers(contributors);
         }
-            projectRepository.save(project);
+        projectRepository.save(project);
         return project;
     }
 
@@ -87,7 +86,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-
     @Override
     public void addMemberToProjectTeam(AddMemberForProjectOrTicket addMemberForProjectOrTicket, int projectId) {
         List<Member> members = addMemberForProjectOrTicket.getMembers().stream().map(id -> memberRepository.findMemberById(id)).toList();
@@ -99,10 +97,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void removeMemberFromProjectTeam(AddMemberForProjectOrTicket addMemberForProjectOrTicket, int projectId) {
         List<Member> ids = addMemberForProjectOrTicket.getMembers().stream().map(input ->
-               memberRepository.findMemberById(input)).toList();
+                memberRepository.findMemberById(input)).toList();
 
-       List<Member> members = projectRepository.findProjectById(projectId).getMembers().stream().filter(member -> !ids.contains(member)).toList();
-       projectRepository.findProjectById(projectId).setMembers(members);
+        List<Member> members = projectRepository.findProjectById(projectId).getMembers().stream().filter(member -> !ids.contains(member)).toList();
+        projectRepository.findProjectById(projectId).setMembers(members);
     }
 
 
@@ -112,7 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.delete(project);
     }
 
-    private Integer convertToInteger(String num){
+    private Integer convertToInteger(String num) {
         return Integer.getInteger(num);
     }
 }

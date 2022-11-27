@@ -27,45 +27,45 @@ public class TicketController {
     }
 
     @PostMapping("/members/{mid}/projects/{pid}/tickets")
-    public ResponseEntity<?> createTicket(@Valid @RequestBody TicketDto ticketDto, @PathVariable(name = "pid") int id){
-        ticketService.createTicket(ticketDto,id);
+    public ResponseEntity<?> createTicket(@Valid @RequestBody TicketDto ticketDto, @PathVariable(name = "pid") int id) {
+        ticketService.createTicket(ticketDto, id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/members/{mid}/projects/{pid}/tickets")
-    public List<Ticket> getAllTicketsByProjectId(@PathVariable(name = "pid") int id){
+    public List<Ticket> getAllTicketsByProjectId(@PathVariable(name = "pid") int id) {
         return ticketService.getAllTicketsForProject(id);
     }
 
     @GetMapping("/members/{mid}/projects/{pid}/tickets/{tid}")
-    public ResponseEntity<Ticket> getTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid){
-        return new ResponseEntity<>(ticketService.getTicketById(id,tid),HttpStatus.OK);
+    public ResponseEntity<Ticket> getTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid) {
+        return new ResponseEntity<>(ticketService.getTicketById(id, tid), HttpStatus.OK);
     }
 
     @PatchMapping("/members/{mid}/projects/{pid}/tickets/{tid}")
-    public ResponseEntity<?> updateTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody TicketDto ticketDto){
-            ticketService.editTicket(ticketDto,tid,id);
-        return new ResponseEntity<>("ticket updated",HttpStatus.OK);
+    public ResponseEntity<?> updateTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody TicketDto ticketDto) {
+        ticketService.editTicket(ticketDto, tid, id);
+        return new ResponseEntity<>("ticket updated", HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/members/{mid}/projects/{pid}/tickets/{tid}")
-    public ResponseEntity<String> deleteTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid){
-        ticketService.deleteTicketById(id,tid);
+    public ResponseEntity<String> deleteTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid) {
+        ticketService.deleteTicketById(id, tid);
         return new ResponseEntity<>("ticket deleted successfully.", HttpStatus.OK);
     }
 
     @PostMapping("/members/{mid}/projects/{pid}/tickets/{tid}/add")
-    public ResponseEntity<?> assignMemberToTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody AddMemberForProjectOrTicket members){
-        ticketService.AddMemberToAssignedDevsForTicket(members,id,tid);
-        return new ResponseEntity<>("assigned",HttpStatus.OK);
+    public ResponseEntity<?> assignMemberToTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody AddMemberForProjectOrTicket members) {
+        ticketService.AddMemberToAssignedDevsForTicket(members, id, tid);
+        return new ResponseEntity<>("assigned", HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/members/{mid}/projects/{pid}/tickets/{tid}/remove")
-    public ResponseEntity<?> removeMemberToTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody AddMemberForProjectOrTicket members){
-        ticketService.removeMemberToAssignedDevsForTicket(members,id,tid);
-        return new ResponseEntity<>("removed",HttpStatus.OK);
+    public ResponseEntity<?> removeMemberToTicket(@PathVariable(name = "pid") int id, @PathVariable(name = "tid") int tid, @RequestBody AddMemberForProjectOrTicket members) {
+        ticketService.removeMemberToAssignedDevsForTicket(members, id, tid);
+        return new ResponseEntity<>("removed", HttpStatus.OK);
     }
 
 

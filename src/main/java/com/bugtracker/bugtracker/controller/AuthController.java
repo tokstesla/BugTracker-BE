@@ -27,7 +27,7 @@ public class AuthController {
     private final MemberRepository memberRepository;
 
     public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider, MemberService memberService, MemberRepository memberRepository) {
-        this.authenticationManager = authenticationManager;
+        this.authenticationManager = authenticationManager ;
         this.tokenProvider = tokenProvider;
         this.memberService = memberService;
         this.memberRepository = memberRepository;
