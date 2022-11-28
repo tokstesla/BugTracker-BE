@@ -29,7 +29,7 @@ public class TicketController {
     @PostMapping("/members/{mid}/projects/{pid}/tickets")
     public ResponseEntity<?> createTicket(@Valid @RequestBody TicketDto ticketDto, @PathVariable(name = "pid") int id) {
         ticketService.createTicket(ticketDto, id);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("Ticket created", HttpStatus.CREATED);
     }
 
     @GetMapping("/members/{mid}/projects/{pid}/tickets")
