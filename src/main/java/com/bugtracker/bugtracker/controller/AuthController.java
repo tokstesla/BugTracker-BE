@@ -1,17 +1,14 @@
 package com.bugtracker.bugtracker.controller;
 
-import com.bugtracker.bugtracker.dto.JWTAuthResponse;
 import com.bugtracker.bugtracker.dto.LoginDto;
 import com.bugtracker.bugtracker.dto.MemberDto;
+import com.bugtracker.bugtracker.entity.Member;
 import com.bugtracker.bugtracker.repository.MemberRepository;
-import com.bugtracker.bugtracker.security.JwtTokenProvider;
+import com.bugtracker.bugtracker.response.LoginResponse;
+
 import com.bugtracker.bugtracker.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,25 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider, MemberService memberService, MemberRepository memberRepository) {
-        this.authenticationManager = authenticationManager ;
-        this.tokenProvider = tokenProvider;
+    public AuthController(MemberService memberService, MemberRepository memberRepository) {
         this.memberService = memberService;
         this.memberRepository = memberRepository;
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(token));
+    @PostMapping("/signin")
+    public ResponseEntity<LoginResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+        Member member = memberRepository.findUserByEmail(loginDto.getEmail());
+        if(member.getPassword().equals(loginDto.getPassword())){
+            return ResponseEntity.ok(new LoginResponse(member.getId(), member.getFirstName(), member.getLastName(), member.getEmail(),member.getRoles().toString()));
+        }
+        return new ResponseEntity<>(new LoginResponse("user not allowed"),HttpStatus.BAD_REQUEST);
     }
 
 

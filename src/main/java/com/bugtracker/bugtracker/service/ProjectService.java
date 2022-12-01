@@ -14,7 +14,7 @@ public interface ProjectService {
     Project getProjectById(int projectId);
 
 
-    ProjectResponse getAllProjects(int pageNo, int pageSize, String sortBy, String sortDir);
+    List<Project> getAllProjects();
 
     void addMemberToProjectTeam(AddMemberForProjectOrTicket addMemberForProjectOrTicket , int productId);
 

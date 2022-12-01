@@ -2,17 +2,13 @@ package com.bugtracker.bugtracker.service.impl;
 
 import com.bugtracker.bugtracker.dto.AddMemberForProjectOrTicket;
 import com.bugtracker.bugtracker.dto.ProjectDto;
-import com.bugtracker.bugtracker.dto.ProjectResponse;
 import com.bugtracker.bugtracker.entity.Member;
 import com.bugtracker.bugtracker.entity.Project;
 import com.bugtracker.bugtracker.exception.ResourceNotFoundException;
 import com.bugtracker.bugtracker.repository.MemberRepository;
 import com.bugtracker.bugtracker.repository.ProjectRepository;
 import com.bugtracker.bugtracker.service.ProjectService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,26 +59,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse getAllProjects(int pageNo, int pageSize, String sortBy, String sortDir) {
-
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-
-        Page<Project> projects = projectRepository.findAll(pageable);
-
-        List<Project> listOfProjects = projects.getContent();
-
-        ProjectResponse projectResponse = new ProjectResponse();
-        projectResponse.setContent(listOfProjects);
-        projectResponse.setPageNo(projects.getNumber());
-        projectResponse.setPageSize(projects.getSize());
-        projectResponse.setTotalElements(projects.getTotalElements());
-        projectResponse.setTotalPages(projects.getTotalPages());
-        projectResponse.setLast(projects.isLast());
-
-        return projectResponse;
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
     }
 
 

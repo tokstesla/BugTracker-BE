@@ -63,29 +63,6 @@ public class TicketServiceImpl implements TicketService {
         return project.getTickets();
     }
 
-//
-//    @Override
-//    public TicketResponse getAllTicketsForProject(int pageNo, int pageSize, String sortBy, String sortDir) {
-//
-//        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
-//                : Sort.by(sortBy).descending();
-//
-//        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-//
-//        Page<Ticket> tickets = ticketRepository.findAll(pageable);
-//
-//        List<Ticket> listOfTickets = tickets.getContent();
-//
-//        TicketResponse ticketResponse = new TicketResponse();
-//        ticketResponse.setContent(listOfTickets);
-//        ticketResponse.setPageNo(tickets.getNumber());
-//        ticketResponse.setPageSize(tickets.getSize());
-//        ticketResponse.setTotalElements(tickets.getTotalElements());
-//        ticketResponse.setTotalPages(tickets.getTotalPages());
-//        ticketResponse.setLast(tickets.isLast());
-//
-//        return ticketResponse;
-//    }
 
 
     @Override
